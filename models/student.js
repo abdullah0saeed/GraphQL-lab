@@ -1,10 +1,16 @@
-const { Schema, model } = require("mongoose");
+const { Schema, model, Types } = require("mongoose");
 
 const studentSchema = new Schema({
   name: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  age: { type: Number, required: true },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    match: [/.+@.+\..+/, "Must use a valid email address"],
+  },
+  age: { type: Number, required: true, min: 16 },
   major: { type: String },
+  courses: [{ type: Types.ObjectId, ref: "Course" }],
 });
 
 module.exports = model("Student", studentSchema);
